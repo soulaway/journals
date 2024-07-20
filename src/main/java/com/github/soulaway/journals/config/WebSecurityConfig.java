@@ -21,7 +21,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 	@Override
 	protected void configure(HttpSecurity http) throws Exception {
 		http.authorizeRequests().antMatchers("/home", "/", "/css/**", "/js/**", "/images/**", "/public/rest/**")
-				.permitAll().antMatchers("/publisher/**").hasAuthority("PUBLISHER").anyRequest().fullyAuthenticated()
+				.permitAll().antMatchers("/trader/**").hasAuthority("TRADER").anyRequest().fullyAuthenticated()
 				.and().formLogin().loginPage("/login").failureUrl("/login?error").usernameParameter("username")
 				.permitAll().and().logout().logoutUrl("/logout").logoutSuccessUrl("/login?logout").permitAll().and()
 				.exceptionHandling().accessDeniedPage("/403").and().csrf().disable();

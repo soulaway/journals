@@ -1,23 +1,23 @@
-var app = angular.module("JournalApp", []);
+var app = angular.module("TraderApp", []);
 
-app.controller("CategoryController", function ($scope, $http) {
+app.controller("ExchangeController", function ($scope, $http) {
 
-    $scope.isAnySubscription = function() {
+    $scope.isAnyAssignment = function() {
         var result = false;
-        for(var i=0; i< $scope.subscriptions.length; i++) {
-            if($scope.subscriptions[i].active) {
+        for(var i=0; i< $scope.exchanges.length; i++) {
+            if($scope.exchanges[i].active) {
                 return true;
             }
         }
         return result;
     }
 
-    $scope.subscribe = function (categoryId) {
-        $http.post('/rest/journals/subscribe/' + categoryId).success(function (data, status, headers, config) {
-            for (var i = 0; i < $scope.subscriptions.length; i++) {
-                var s = $scope.subscriptions[i];
-                if (s.id == categoryId) {
-                    $scope.subscriptions[i].active = true;
+    $scope.assign = function (exchangeId) {
+        $http.post('/rest/sessions/assign/' + exchangeId).success(function (data, status, headers, config) {
+            for (var i = 0; i < $scope.assignments.length; i++) {
+                var s = $scope.assignments[i];
+                if (s.id == exchangeId) {
+                    $scope.assignments[i].active = true;
                     break;
                 }
             }
@@ -28,9 +28,9 @@ app.controller("CategoryController", function ($scope, $http) {
         });
     }
 
-    $scope.getCategories = function () {
-        $http.get('/public/rest/category').success(function (data, status, headers, config) {
-            $scope.categories = data;
+    $scope.getExchanges = function () {
+        $http.get('/public/rest/exchange').success(function (data, status, headers, config) {
+            $scope.exchanges = data;
         }).error(function (data, status, headers, config) {
             if (data.message == 'Time is out') {
                 console.log("Timeout")
@@ -38,21 +38,9 @@ app.controller("CategoryController", function ($scope, $http) {
         });
     }
 
-    $scope.getSubscriptions = function () {
-        $http.get('/rest/journals/subscriptions').success(function (data, status, headers, config) {
-            $scope.subscriptions = data;
-        }).error(function (data, status, headers, config) {
-            if (data.message == 'Time is out') {
-                console.log("Timeout")
-            }
-        });
-    }
-});
-
-app.controller("UserSubscriptionController", function ($scope, $http) {
-    $scope.getCategories = function () {
-        $http.get('/public/rest/category').success(function (data, status, headers, config) {
-            $scope.categories = data;
+    $scope.getAssignments = function () {
+        $http.get('/rest/session/assignments').success(function (data, status, headers, config) {
+            $scope.assignments = data;
         }).error(function (data, status, headers, config) {
             if (data.message == 'Time is out') {
                 console.log("Timeout")
@@ -61,16 +49,28 @@ app.controller("UserSubscriptionController", function ($scope, $http) {
     }
 });
 
-app.controller("JournalController", function ($scope, $http, $filter) {
-    $scope.getJournals = function () {
-        $http.get('/rest/journals').success(function (data, status, headers, config) {
-            var journals = data;
-            for (var i = 0; i < journals.length; i++) {
-                var journal = journals[i];
-                journal.readLink = "/view/" + journal.id;
-                journal.publishDate = $filter('date')(journal.publishDate);
+app.controller("UserAssignmentController", function ($scope, $http) {
+    $scope.getCategories = function () {
+        $http.get('/public/rest/exchange').success(function (data, status, headers, config) {
+            $scope.exchanges = data;
+        }).error(function (data, status, headers, config) {
+            if (data.message == 'Time is out') {
+                console.log("Timeout")
             }
-            $scope.journalList = journals;
+        });
+    }
+});
+
+app.controller("SessionController", function ($scope, $http, $filter) {
+    $scope.getSessions = function () {
+        $http.get('/rest/sessions').success(function (data, status, headers, config) {
+            var sessions = data;
+            for (var i = 0; i < sessions.length; i++) {
+                var session = sessions[i];
+                session.viewLink = "/view/" + session.id;
+                session.publishDate = $filter('date')(session.publishDate);
+            }
+            $scope.sessionList = sessions;
         }).error(function (data, status, headers, config) {
             if (data.message == 'Time is out') {
                 $scope.finishByTimeout();
@@ -80,26 +80,26 @@ app.controller("JournalController", function ($scope, $http, $filter) {
 });
 
 app.controller("BrowseController", function ($scope, $http, $filter, $window) {
-    $scope.getJournals = function () {
-        $http.get('/rest/journals/published').success(function (data, status, headers, config) {
-            var journals = data;
-            for (var i = 0; i < journals.length; i++) {
-                var journal = journals[i];
-                journal.publishDate = $filter('date')(journal.publishDate);
-                journal.readLink = "/view/" + journal.id;
+    $scope.getSessions = function () {
+        $http.get('/rest/sessions/active').success(function (data, status, headers, config) {
+            var sessions = data;
+            for (var i = 0; i < sessions.length; i++) {
+                var session = sessions[i];
+                session.publishDate = $filter('date')(session.publishDate);
+                session.viewLink = "/view/" + session.id;
             }
-            $scope.journalList = journals;
+            $scope.sessionList = session;
         }).error(function (data, status, headers, config) {
             console.error(status, data, headers);
         });
     }
 
     $scope.delete = function (id) {
-        $http.delete('/rest/journals/unPublish/' + id).success(function (data, status, headers, config) {
-            for (var i = 0; i < $scope.journalList.length; i++) {
-                var j = $scope.journalList[i];
+        $http.delete('/rest/sessions/stop/' + id).success(function (data, status, headers, config) {
+            for (var i = 0; i < $scope.sessionList.length; i++) {
+                var j = $scope.sessionList[i];
                 if (j.id == id) {
-                    $scope.journalList.splice(i, 1);
+                    $scope.sessionList.splice(i, 1);
                     break;
                 }
             }
@@ -109,10 +109,10 @@ app.controller("BrowseController", function ($scope, $http, $filter, $window) {
     }
 
     $scope.view = function (id) {
-        for (var i = 0; i < $scope.journalList.length; i++) {
-            var j = $scope.journalList[i];
+        for (var i = 0; i < $scope.sessionList.length; i++) {
+            var j = $scope.sessionList[i];
             if (j.id == id) {
-                $window.location.href = $scope.journalList[i].readLink;
+                $window.location.href = $scope.sessionList[i].viewLink;
             }
         }
     }

@@ -27,7 +27,7 @@ import com.github.soulaway.journals.service.JournalService;
 import com.github.soulaway.journals.service.UserService;
 
 @RestController
-@RequestMapping("/rest/journals")
+@RequestMapping("/rest/sessions")
 public class JournalRestController {
 
 	@Autowired
@@ -48,21 +48,21 @@ public class JournalRestController {
 		return ResponseEntity.ok(journalService.listAll(activeUser.getUser()));
 	}
 
-	@RequestMapping(value = "/published", method = RequestMethod.GET)
+	@RequestMapping(value = "/active", method = RequestMethod.GET)
 	public List<Journal> publishedList(@AuthenticationPrincipal Principal principal) {
 		CurrentUser activeUser = (CurrentUser) ((Authentication) principal).getPrincipal();
 		Optional<Publisher> publisher = publisherRepository.findByUser(activeUser.getUser());
 		return journalService.publisherList(publisher.get());
 	}
 
-	@RequestMapping(value = "/unPublish/{id}", method = RequestMethod.DELETE)
+	@RequestMapping(value = "/delete/{id}", method = RequestMethod.DELETE)
 	public void unPublish(@PathVariable("id") Long id, @AuthenticationPrincipal Principal principal) {
 		CurrentUser activeUser = (CurrentUser) ((Authentication) principal).getPrincipal();
 		Optional<Publisher> publisher = publisherRepository.findByUser(activeUser.getUser());
 		journalService.unPublish(publisher.get(), id);
 	}
 
-	@RequestMapping(value = "/subscriptions", method = RequestMethod.GET)
+	@RequestMapping(value = "/assignments", method = RequestMethod.GET)
 	public List<SubscriptionDTO> getUserSubscriptions(@AuthenticationPrincipal Principal principal) {
 		CurrentUser activeUser = (CurrentUser) ((Authentication) principal).getPrincipal();
 		User persistedUser = userService.findById(activeUser.getId());
@@ -78,8 +78,8 @@ public class JournalRestController {
 		return subscriptionDTOs;
 	}
 
-	@RequestMapping(value = "/subscribe/{categoryId}", method = RequestMethod.POST)
-	public void subscribe(@PathVariable("categoryId") Long categoryId, @AuthenticationPrincipal Principal principal) {
+	@RequestMapping(value = "/assign/{exchangeId}", method = RequestMethod.POST)
+	public void subscribe(@PathVariable("exchangeId") Long categoryId, @AuthenticationPrincipal Principal principal) {
 		CurrentUser activeUser = (CurrentUser) ((Authentication) principal).getPrincipal();
 		User user = userService.findById(activeUser.getUser().getId());
 		userService.subscribe(user, categoryId);

@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8"/>
+    <title>Start Trade</title>
+    <script src="/js/angular-min.js"></script>
+    <script src="/js/app.js"></script>
+    <link rel="stylesheet" type="text/css" href="/css/style.css"/>
+</head>
+<body ng-app="TraderApp" ng-controller="ExchangeController">
+
+<div th:if="${message}">
+    <h2 th:text="${message}"/>
+</div>
+
+<div ng-controller="getExchanges">
+    <form method="POST" enctype="multipart/form-data" action="/trader/trade">
+        <table>
+            <tr>
+                <td>Exchange:</td>
+                <td><select name="exchange">
+                    <option ng-repeat="option in exchanges" value="{{option.id}}">{{option.name}}</option>
+                </select>
+                </td>
+            </tr>
+            <tr>
+                <td>Exchange credentials:</td>
+                <td><input value="Select File" type="file" name="file" accept="application/pdf"/></td>
+            </tr>
+            <tr>
+                <td>Assets:</td>
+                <td><input type="text" name="name"/></td>
+            </tr>
+            <tr>
+                <td>Limits:</td>
+                <td><input type="text" name="limits"/></td>
+            </tr>
+            <tr>
+                <td>
+                    <input type="button" value="Back" onclick="window.location.href='/trader/browse'"/>
+                </td>
+                <td><input type="submit" value="Trade"/></td>
+            </tr>
+        </table>
+    </form>
+</div>
+
+
+</body>
+</html>
+
+

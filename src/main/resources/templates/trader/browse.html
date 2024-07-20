@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8"/>
+    <title>Trader page</title>
+    <script src="/js/angular-min.js"></script>
+    <script src="/js/app.js"></script>
+    <link rel="stylesheet" type="text/css" href="/css/style.css"/>
+</head>
+<body ng-app="TraderApp" ng-controller="BrowseController">
+<h1>Trader page</h1>
+<table>
+    <tr>
+        <td>
+            <form action="/trader/trade">
+                <input type="submit" value="New Trading session"/>
+            </form>
+        </td>
+        <td>
+            <form action="/sessions">
+                <input type="submit" value="Go back to sessions"/>
+            </form>
+        </td>
+    </tr>
+</table>
+
+<div ng-controller="getSessions">
+    <table>
+        <thead>
+        <tr>
+            <td>Name</td>
+            <td>Publisher</td>
+            <td>Category</td>
+            <td>Publish date</td>
+            <td>Action</td>
+        </tr>
+        </thead>
+        <tbody>
+        <tr ng-repeat="session in sessionList">
+            <td>{{session.name}}</td>
+            <td>{{session.trader.name}}</td>
+            <td>{{session.exchane.name}}</td>
+            <td>{{session.publishDate}}</td>
+            <td>
+                <input type="button" value="stop" ng-click="delete(session.id)"/>
+                <input type="button" value="view" ng-click="view(session.id)"/>
+            </td>
+        </tr>
+        </tbody>
+    </table>
+</div>
+</body>
+</html>

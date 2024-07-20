@@ -36,14 +36,14 @@ public class PublisherController {
 	@Autowired
 	private JournalService journalService;
 
-	@RequestMapping(method = RequestMethod.GET, value = "/publisher/publish")
+	@RequestMapping(method = RequestMethod.GET, value = "/trader/trade")
 	public String provideUploadInfo(Model model) {
-		return "publisher/publish";
+		return "trader/trade";
 	}
 
-	@RequestMapping(method = RequestMethod.POST, value = "/publisher/publish")
-	@PreAuthorize("hasRole('PUBLISHER')")
-	public String handleFileUpload(@RequestParam("name") String name, @RequestParam("category")Long categoryId, @RequestParam("file") MultipartFile file,
+	@RequestMapping(method = RequestMethod.POST, value = "/trader/trade")
+	@PreAuthorize("hasRole('TRADER')")
+	public String handleFileUpload(@RequestParam("name") String name, @RequestParam("exchange")Long categoryId, @RequestParam("file") MultipartFile file,
 			RedirectAttributes redirectAttributes, @AuthenticationPrincipal Principal principal) {
 
 		CurrentUser activeUser = (CurrentUser) ((Authentication) principal).getPrincipal();
@@ -63,7 +63,7 @@ public class PublisherController {
 				journal.setUuid(uuid);
 				journal.setName(name);
 				journalService.publish(publisher.get(), journal, categoryId);
-				return "redirect:/publisher/browse";
+				return "redirect:/trader/browse";
 			} catch (Exception e) {
 				redirectAttributes.addFlashAttribute("message",
 						"You failed to publish " + name + " => " + e.getMessage());
@@ -73,7 +73,7 @@ public class PublisherController {
 					"You failed to upload " + name + " because the file was empty");
 		}
 
-		return "redirect:/publisher/publish";
+		return "redirect:/trader/trade";
 	}
 
 	private boolean createDirectoryIfNotExist(File dir) {

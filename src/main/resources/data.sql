@@ -1,5 +1,5 @@
-INSERT INTO user(login_name, pwd, enabled, role) VALUES ('publisher1', '$2a$10$Q5bxyPXhHXFc1fRUMCRWR.GbgsXx9aGZdoEoEAz2JFEfckdyUKfOi', TRUE, 'PUBLISHER');
-INSERT INTO user(login_name, pwd, enabled, role) VALUES ('publisher2', '$2a$10$MUahUza86ErCxtsgpmMBDeR5VtoGHioRdl03/jQmkM/sk6L.Eg28e', TRUE, 'PUBLISHER');
+INSERT INTO user(login_name, pwd, enabled, role) VALUES ('publisher1', '$2a$10$Q5bxyPXhHXFc1fRUMCRWR.GbgsXx9aGZdoEoEAz2JFEfckdyUKfOi', TRUE, 'TRADER');
+INSERT INTO user(login_name, pwd, enabled, role) VALUES ('publisher2', '$2a$10$MUahUza86ErCxtsgpmMBDeR5VtoGHioRdl03/jQmkM/sk6L.Eg28e', TRUE, 'TRADER');
 INSERT INTO user(login_name, pwd, enabled, role) VALUES ('user1', '$2a$10$WcgRF8VQ8DKt4h4Hz9pWv.6MXnIRmcPr0j9jqsseprsBwTD4w8WSm', TRUE, 'USER');
 INSERT INTO user(login_name, pwd, enabled, role) VALUES ('user2', '$2a$10$Q5bxyPXhHXFc1fRUMCRWR.GbgsXx9aGZdoEoEAz2JFEfckdyUKfOi', TRUE, 'USER');
 INSERT INTO user(login_name, pwd, enabled, role) VALUES ('dgsoloviev.pub@gmail.com', '$2a$10$Q5bxyPXhHXFc1fRUMCRWR.GbgsXx9aGZdoEoEAz2JFEfckdyUKfOi', TRUE, 'USER');
@@ -18,5 +18,5 @@ INSERT INTO journal(id, publisher_id, category_id, name, publish_date, uuid) VAL
 INSERT INTO journal(id, publisher_id, category_id, name, publish_date, uuid) VALUES(2, 1, 4, 'Test Journal', NOW(), '09628d25-ea42-490e-965d-cd4ffb6d4e9d');
 INSERT INTO journal(id, publisher_id, category_id, name, publish_date, uuid) VALUES(3, 2, 5, 'Health', NOW(), '75f29692-237b-4116-95ed-645de5c57b4d');
 
-INSERT INTO subscription(id, user_id, category_id, date) VALUES(1, 3, 3, NOW());
-INSERT INTO subscription(id, user_id, category_id, date) VALUES(2, 5, 1, NOW());
+INSERT INTO subscription(id, user_id, category_id, date) VALUES(1, 1, 3, NOW());
+INSERT INTO subscription(id, user_id, category_id, date) VALUES(2, 1, 1, NOW());

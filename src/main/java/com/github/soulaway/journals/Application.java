@@ -12,7 +12,7 @@ public class Application {
 	public static final String ROOT;
 
 	static {
-		ROOT = System.getProperty("upload-dir", System.getProperty("user.dir") + "/fileio	");
+		ROOT = System.getProperty("upload-dir", System.getProperty("user.dir") + "/fileio");
 	}
 
 	public static void main(String[] args) throws Exception {
